@@ -8,6 +8,7 @@
       <v-card-text>
         <div class="text-h6 text-pika">皮：PikaPika！</div>
         <div class="text-h6 text-pika">皮：PikaPikaChu~~~</div>
+        <div class="text-h6 text-girl">呆：我可是清大皮卡丘..竟然比我還會放電！</div>
         <div class="text-h6 text-girl">{{word0}}</div>
       </v-card-text>
       <v-card-actions>
@@ -60,7 +61,7 @@
                       <v-btn class="text-h6" :disabled="dis2" v-bind="attrs" v-on="on">看電影  {{eb2}}/1</v-btn>
                     </template>
                     <v-card>
-                      <v-card-title class="orange lighten-2">跟呆一起看過哪些電影？</v-card-title>
+                      <v-card-title class="orange lighten-2">跟呆一起看過哪些電影或影集？</v-card-title>
                       <v-select v-model="mv" :items="movies" label="請選擇" multiple chips></v-select>
                       <v-card-actions>
                         <v-spacer></v-spacer>
@@ -71,11 +72,11 @@
 
                   <v-dialog v-model="dialog13" width="500" persistent>
                     <template v-slot:activator="{ on, attrs }">
-                      <v-btn class="text-h6" :disabled="dis3" v-bind="attrs" v-on="on">寫網頁  {{eb3}}/1</v-btn>
+                      <v-btn class="text-h6" :disabled="dis3" v-bind="attrs" v-on="on">密語  {{eb3}}/1</v-btn>
                     </template>
                     <v-card>
-                      <v-card-title class="orange lighten-2">此次皮卡丘專案是用什麼前端框架編寫而成？</v-card-title>
-                      <v-text-field v-model="ans3" label="請輸入全小寫英文名稱"></v-text-field>
+                      <v-card-title class="orange lighten-2">要命令呆做呆命令的事要加什麼關鍵字？</v-card-title>
+                      <v-text-field v-model="ans3" label="請輸入名稱" hint="三個字，諧音梗，工程師必學" persistent-hint></v-text-field>
                       <v-card-actions>
                         <v-spacer></v-spacer>
                         <v-btn color="yellow darken-1" rounded @click="btn3()">送出</v-btn>
@@ -116,38 +117,24 @@
                   <div>
                     <v-icon large color="red">mdi-pokeball</v-icon>
                     <span>{{ballCnt}}</span>
-                  </div>
-                  
+                  </div>    
                   <div class="ml-auto">
                     <v-btn @click="throwBall()" depressed :disabled="disBall">精靈球</v-btn>
-                    <!--v-btn @click="throwBall()" depressed>精靈球</v-btn-->
                   </div>
                 </div>
                 
                 <div class="d-flex">
                   <div>
-                    <v-icon large color="blue">mdi-pokeball</v-icon>
+                    <v-icon large color="#0000FF">mdi-pokeball</v-icon>
                     <span>{{ball2Cnt}}</span>
                   </div>
                   <div class="ml-auto">
-                    <v-dialog v-model="dialog22" width="500" persistent>
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-btn @click="throwBall2()" depressed :disabled="disBall2" v-bind="attrs" v-on="on">高級球</v-btn>
-                      </template>
-                      <v-card>
-                        <v-card-title class="orange lighten-2">投出高級球！</v-card-title>
-                        <v-card-text class="text-h5">糟糕！浪費高級球了！</v-card-text>
-                        <v-card-actions>
-                          <v-spacer></v-spacer>
-                          <v-btn color="yellow darken-1" rounded @click="dialog22 = false">關閉</v-btn>
-                        </v-card-actions>
-                      </v-card>
-                    </v-dialog>
+                    <v-btn @click="throwBall2()" depressed :disabled="disBall2">超級球</v-btn>
                   </div>
                 </div>
                 <div class="d-flex">
                   <div>
-                    <v-icon large color="yellow">mdi-pokeball</v-icon>
+                    <v-icon large color="#ffd700">mdi-pokeball</v-icon>
                     <span>0</span>
                   </div>
                   <div class="ml-auto">
@@ -204,7 +191,7 @@
         </v-card>
       </div>
 
-      <div class="card3 card-shape">
+      <div class="card3 card-shape" style="background-color:#FFFACD;">
         <div class="text-h5 mx-7 my-3">皮卡丘
           <v-icon color="pink">mdi-gender-female</v-icon>
           <div class="div-block" style="position: absolute; right: 10%">Lv99</div>
@@ -216,7 +203,7 @@
           rounded
         ></v-progress-linear>
       </div>
-      <div class="card4 card-shape">
+      <div class="card4 card-shape" style="background-color:#FFFACD;">
         <div class="text-h5 mx-7 my-3">黃阿呆
           <v-icon color="pink">mdi-gender-female</v-icon>
           <div class="div-block" style="position: absolute; right: 10%">Lv21</div>
@@ -237,6 +224,17 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="yellow darken-1" rounded @click="dialog21 = false; disBall = false">關閉</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+      <v-dialog v-model="dialog22" width="500" persistent>
+        <v-card>
+          <v-card-title class="orange lighten-2">投出超級球！</v-card-title>
+          <v-card-text class="text-h5">糟糕！浪費超級球了！</v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="yellow darken-1" rounded @click="dialog22 = false">關閉</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -262,6 +260,7 @@ export default {
       fightCnt: 0,
       ballCnt: 520,
       ball2Cnt: 0,
+      ballShakeTime: 0,
       fallBall: 0,
       fallBall2: 0,
       factor1: 1,
@@ -291,7 +290,7 @@ export default {
       eb3: 1,
       eb4: 1,
       wordtt: '皮卡丘使出了十萬伏特！',
-      word0: '呆：我可是清大皮卡丘..竟然比我還會放電！',
+      word0: '',
       word1: '呆：等級跟血量好像暗示著什麼...是巧合嗎？！',
       word2: '呆：我得專注才行！',
       p1: 1,
@@ -315,15 +314,19 @@ export default {
     },
     getColor: function(value) {
       if (value > 50) {
+        this.ballShakeTime = 500
         return 'green'
       }
       else if (value > 25) {
+        this.ballShakeTime = 1300
         return 'orange'
       }
       else if (value > 10) {
+        this.ballShakeTime = 2000
         return 'red'
       }
       else {
+        this.ballShakeTime = 2600
         return 'red darken-3'
       }
       return ''
@@ -368,7 +371,7 @@ export default {
       this.dialog11 = false
       this.dialog1 = false
       if (this.ans1 == '象山') {
-        setTimeout(() => this.attack(), 1500)
+        setTimeout(() => this.attack(), 1200)
         this.dis1 = true
         this.eb1 = 0
       }
@@ -381,7 +384,7 @@ export default {
       this.dialog12 = false
       this.dialog1 = false
       if (this.mv.length == 2 && ((this.mv[0] == '天能' && this.mv[1] == '亞森羅蘋') || (this.mv[1] == '天能' && this.mv[0] == '亞森羅蘋'))) {
-        setTimeout(() => this.attack(), 1500)
+        setTimeout(() => this.attack(), 1200)
         this.dis2 = true
         this.eb2 = 0
       }
@@ -393,8 +396,8 @@ export default {
     btn3() {
       this.dialog13 = false
       this.dialog1 = false
-      if (this.ans3 == 'vue') {
-        setTimeout(() => this.attack(), 1500)
+      if (this.ans3 == '命令列') {
+        setTimeout(() => this.attack(), 1200)
         this.dis3 = true
         this.eb3 = 0
       }
@@ -407,7 +410,7 @@ export default {
       this.dialog14 = false
       this.dialog1 = false
       if (this.ans4 == '可愛小呆') {
-        setTimeout(() => this.attack(), 1500)
+        setTimeout(() => this.attack(), 1200)
         this.dis4 = true
         this.eb4 = 0
       }
@@ -421,14 +424,13 @@ export default {
       this.fallBall = 1
       this.disBall = true
       var p = Math.floor(Math.random()*(100-1+1)+1)
-      if (p >= Math.ceil(this.value1*Math.pow(this.factor1, this.fightCnt)+this.fightCnt*4)) {
-        this.$router.push({ path: '/catch' })
-      }
-      
       setTimeout(() => {
         this.fallBall = 0
+        if (p >= Math.ceil(this.value1*Math.pow(this.factor1, this.fightCnt)+this.fightCnt*4)) {
+          this.$router.push({ path: '/catch' })
+        }
         this.dialog21 = true
-      }, 2000)
+      }, this.ballShakeTime)
     },
     throwBall2() {
       this.ball2Cnt -= 1
@@ -438,7 +440,6 @@ export default {
       if (p >= Math.ceil(this.value1*Math.pow(this.factor1, this.fightCnt)+this.fightCnt*4)-20) {
         this.$router.push({ path: '/catch' })
       }
-      
       setTimeout(() => {
         this.fallBall2 = 0
         this.dialog22 = true
@@ -508,7 +509,7 @@ export default {
   bottom: 27vh;
 }
 .card-shape {
-  width: 25vw;
+  width: 20vw;
   height: 15vh;
   background-color: #fff;
   /*border: 3px solid black;*/
