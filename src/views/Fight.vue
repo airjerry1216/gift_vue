@@ -2,18 +2,19 @@
   <div class="" style="min-height: 100vh;">
     
     <div v-if="bgType === 1" class="d-flex justify-center align-center flex-wrap bg1">
+       <img @click="catchBall2()" class="ball" src="../assets/ball.jpg">
       <v-card class="card1 mx-auto">
       <v-card-title class="">戰鬥開始！</v-card-title>
       <v-card-text>
         <div class="text-h6 text-pika">皮：PikaPika！</div>
         <div class="text-h6 text-pika">皮：PikaPikaChu~~~</div>
-        <div class="text-h6 text-girl">呆：我可是清大皮卡丘..竟然比我還會放電！</div>
+        <div class="text-h6 text-girl">{{word0}}</div>
       </v-card-text>
-      <v-card-action>
+      <v-card-actions>
         <v-col class="text-right">
         <v-btn @click="changeBg1()" color="yellow darken-1" rounded>接招</v-btn>
         </v-col>
-      </v-card-action>
+      </v-card-actions>
       </v-card>
     </div>
 
@@ -27,8 +28,6 @@
             <!--div class="text-h6 text-girl">呆：目前的收服成功率大概是 {{ p1 }}% ...</div-->
             <!--div class="text-h6">{{p2}}</div-->
           </v-card-text>
-          <v-card-action>
-          </v-card-action>
         </v-card>
 
         <v-card width="45%" class="mx-5">
@@ -110,35 +109,40 @@
               </template>
               <v-card>
                 <v-card-title class="orange lighten-2">我的背包</v-card-title>
+                
+                
+
                 <div class="d-flex">
                   <div>
                     <v-icon large color="red">mdi-pokeball</v-icon>
                     <span>{{ballCnt}}</span>
                   </div>
+                  
                   <div class="ml-auto">
+                    <v-btn @click="throwBall()" depressed :disabled="disBall">精靈球</v-btn>
                     <!--v-btn @click="throwBall()" depressed>精靈球</v-btn-->
-                    <v-dialog v-model="dialog21" width="500" persistent>
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-btn @click="throwBall()" depressed v-bind="attrs" v-on="on">精靈球</v-btn>
-                      </template>
-                      <v-card>
-                        <v-card-title class="orange lighten-2">投出精靈球！</v-card-title>
-                        <v-card-text class="text-h5">糟糕！皮卡丘掙脫了！</v-card-text>
-                        <v-card-actions>
-                          <v-spacer></v-spacer>
-                          <v-btn color="yellow darken-1" rounded @click="dialog21 = false">關閉</v-btn>
-                        </v-card-actions>
-                      </v-card>
-                    </v-dialog>
                   </div>
                 </div>
+                
                 <div class="d-flex">
                   <div>
                     <v-icon large color="blue">mdi-pokeball</v-icon>
-                    <span>0</span>
+                    <span>{{ball2Cnt}}</span>
                   </div>
                   <div class="ml-auto">
-                    <v-btn @click="throwBall()" depressed disabled>超級球</v-btn><br>
+                    <v-dialog v-model="dialog22" width="500" persistent>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn @click="throwBall2()" depressed :disabled="disBall2" v-bind="attrs" v-on="on">高級球</v-btn>
+                      </template>
+                      <v-card>
+                        <v-card-title class="orange lighten-2">投出高級球！</v-card-title>
+                        <v-card-text class="text-h5">糟糕！浪費高級球了！</v-card-text>
+                        <v-card-actions>
+                          <v-spacer></v-spacer>
+                          <v-btn color="yellow darken-1" rounded @click="dialog22 = false">關閉</v-btn>
+                        </v-card-actions>
+                      </v-card>
+                    </v-dialog>
                   </div>
                 </div>
                 <div class="d-flex">
@@ -150,6 +154,7 @@
                     <v-btn @click="throwBall()" depressed disabled>高級球</v-btn><br>
                   </div>
                 </div>
+
                 <div class="d-flex">
                   <div>
                     <v-icon large color="purple">mdi-pokeball</v-icon>
@@ -224,6 +229,24 @@
         ></v-progress-linear>
         <div class="text-h6" style="position: absolute; right: 10%">8/11</div>
       </div>
+
+      <v-dialog v-model="dialog21" width="500" persistent>
+        <v-card>
+          <v-card-title class="orange lighten-2">投出精靈球！</v-card-title>
+          <v-card-text class="text-h5">糟糕！皮卡丘掙脫了！</v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="yellow darken-1" rounded @click="dialog21 = false; disBall = false">關閉</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+      <div v-show="fallBall === 1" class="pokeball pokeBallPos">
+        <div class="pokeball__button"></div>
+      </div>
+      <div v-show="fallBall2 === 1" class="pokeball2 pokeBallPos">
+        <div class="pokeball__button"></div>
+      </div>
     </div>
 
   </div>
@@ -238,6 +261,9 @@ export default {
       bgType: 1,
       fightCnt: 0,
       ballCnt: 520,
+      ball2Cnt: 0,
+      fallBall: 0,
+      fallBall2: 0,
       factor1: 1,
       factor2: 1,
       dialog1: false,
@@ -249,6 +275,7 @@ export default {
       dialog13: false,
       dialog14: false,
       dialog21: false,
+      dialog22: false,
       ans1: '',
       ans2: '',
       ans3: '',
@@ -257,11 +284,14 @@ export default {
       dis2: false,
       dis3: false,
       dis4: false,
+      disBall: false,
+      disBall2: true,
       eb1: 1,
       eb2: 1,
       eb3: 1,
       eb4: 1,
       wordtt: '皮卡丘使出了十萬伏特！',
+      word0: '呆：我可是清大皮卡丘..竟然比我還會放電！',
       word1: '呆：等級跟血量好像暗示著什麼...是巧合嗎？！',
       word2: '呆：我得專注才行！',
       p1: 1,
@@ -274,6 +304,11 @@ export default {
 
   },
   methods: {
+    catchBall2() {
+      this.disBall2 = false
+      this.ball2Cnt += 1
+      this.word0 = '呆：竟然發現提升捕捉率的超級球！'
+    },
     changeBg1() {
       this.bgType = 2
       this.minus2(30)
@@ -383,10 +418,31 @@ export default {
     },
     throwBall() {
       this.ballCnt -= 1
+      this.fallBall = 1
+      this.disBall = true
       var p = Math.floor(Math.random()*(100-1+1)+1)
       if (p >= Math.ceil(this.value1*Math.pow(this.factor1, this.fightCnt)+this.fightCnt*4)) {
         this.$router.push({ path: '/catch' })
       }
+      
+      setTimeout(() => {
+        this.fallBall = 0
+        this.dialog21 = true
+      }, 2000)
+    },
+    throwBall2() {
+      this.ball2Cnt -= 1
+      this.fallBall2 = 1
+      this.disBall2 = true
+      var p = Math.floor(Math.random()*(100-1+1)+1)
+      if (p >= Math.ceil(this.value1*Math.pow(this.factor1, this.fightCnt)+this.fightCnt*4)-20) {
+        this.$router.push({ path: '/catch' })
+      }
+      
+      setTimeout(() => {
+        this.fallBall2 = 0
+        this.dialog22 = true
+      }, 2000)
     }
   }
 }
@@ -465,7 +521,116 @@ export default {
   width: 50%;
   min-height: 50%;
 }
+.ball {
+  position: absolute;
+  bottom: 5vh;
+  left: 5vw;
+  width: 5vh;
+  height: 5vh;
+  cursor: pointer;
+}
+.pokeBallPos {
+  left: 68%;
+}
 .v-text-field{
   width: 80%;
+}
+
+*, *:before, *:after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+/* Poké Styles */
+.pokeball {
+  position: relative;
+  top: 30%;
+  width: 200px;
+  height: 200px;
+  background: #fff;
+  border: 10px solid #000;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: inset -10px 10px 0 10px #ccc;
+  animation: fall .25s ease-in-out,
+             shake 1.25s cubic-bezier(.36,.07,.19,.97) 3;
+}
+.pokeball::before,
+.pokeball::after {
+  content:"";
+  position: absolute;
+}
+.pokeball::before {
+  background: red;
+  width: 100%;
+  height: 50%;
+}
+.pokeball::after {
+  top: calc(50% - 10px);
+  width: 100%;
+  height: 20px;
+  background: #000;
+}
+.pokeball2 {
+  position: relative;
+  top: 30%;
+  width: 200px;
+  height: 200px;
+  background: #fff;
+  border: 10px solid #000;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: inset -10px 10px 0 10px #ccc;
+  animation: fall .25s ease-in-out,
+             shake 1.25s cubic-bezier(.36,.07,.19,.97) 3;
+}
+.pokeball2::before,
+.pokeball2::after {
+  content:"";
+  position: absolute;
+}
+.pokeball2::before {
+  background: blue;
+  width: 100%;
+  height: 50%;
+}
+.pokeball2::after {
+  top: calc(50% - 10px);
+  width: 100%;
+  height: 20px;
+  background: #000;
+}
+.pokeball__button {
+  position: absolute;
+  top: calc(50% - 30px);
+  left: calc(50% - 30px);
+  width: 60px;
+  height: 60px;
+  background: #7f8c8d;
+  border: 10px solid #fff;
+  border-radius: 50%;
+  z-index: 10;
+  box-shadow: 0 0 0 10px black;
+  animation: blink .5s alternate 7;
+}
+/* Animation */
+@keyframes blink {
+  from { background: #eee;}
+  to { background: #e74c3c; }
+}
+@keyframes shake {
+  0 { transform: translate(0, 0) rotate(0); }
+  20% { transform: translate(-10px, 0) rotate(-20deg); }
+  30% { transform: translate(10px, 0) rotate(20deg); }
+  50% { transform: translate(-10px, 0) rotate(-10deg); }
+  60% { transform: translate(10px, 0) rotate(10deg); }
+  100% { transform: translate(0, 0) rotate(0); }
+}
+@keyframes fall {
+  0% { top: -200px }
+  60% { top: 0 }
+  80% { top: 15% }
+  100% { top: 30% }
 }
 </style>
