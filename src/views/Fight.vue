@@ -48,7 +48,7 @@
                     </template>
                     <v-card>
                       <v-card-title class="orange lighten-2">跟呆第一次牽手是在哪裡？</v-card-title>
-                      <v-text-field v-model="ans1" label="請輸入地點" class="v-text-field" hint="好像刪去些雜念，可以喚起更多回憶" persistent-hint></v-text-field>
+                      <v-text-field v-model="ans1" label="請輸入地點" class="v-text-field" hint="好像刪去一些雜念，可以喚醒更多回憶" persistent-hint></v-text-field>
                       <v-card-actions>
                         <v-spacer></v-spacer>
                         <v-btn color="yellow darken-1" rounded @click="btn1()">送出</v-btn>
