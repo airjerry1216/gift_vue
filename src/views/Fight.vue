@@ -48,7 +48,7 @@
                     </template>
                     <v-card>
                       <v-card-title class="orange lighten-2">跟呆第一次牽手是在哪裡？</v-card-title>
-                      <v-text-field v-model="ans1" label="請輸入地點" class="v-text-field"></v-text-field>
+                      <v-text-field v-model="ans1" label="請輸入地點" class="v-text-field" hint="好像刪去些雜念，可以喚起更多回憶" persistent-hint></v-text-field>
                       <v-card-actions>
                         <v-spacer></v-spacer>
                         <v-btn color="yellow darken-1" rounded @click="btn1()">送出</v-btn>
@@ -223,7 +223,7 @@
           <v-card-text class="text-h5">糟糕！皮卡丘掙脫了！</v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="yellow darken-1" rounded @click="dialog21 = false; disBall = false">關閉</v-btn>
+            <v-btn color="yellow darken-1" rounded @click="dialog21 = false; if(ballCnt > 0) {disBall = false}">關閉</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -234,7 +234,7 @@
           <v-card-text class="text-h5">糟糕！浪費超級球了！</v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="yellow darken-1" rounded @click="dialog22 = false">關閉</v-btn>
+            <v-btn color="yellow darken-1" rounded @click="dialog22 = false; if(ball2Cnt > 0) {disBall2 = false}">關閉</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -304,9 +304,11 @@ export default {
   },
   methods: {
     catchBall2() {
-      this.disBall2 = false
-      this.ball2Cnt += 1
-      this.word0 = '呆：竟然發現提升捕捉率的超級球！'
+      if (this.ball2Cnt < 2) {
+        this.disBall2 = false
+        this.ball2Cnt += 1
+        this.word0 = '呆：竟然發現'+ this.ball2Cnt +'顆提升捕捉率的超級球！'
+      }
     },
     changeBg1() {
       this.bgType = 2
@@ -436,14 +438,14 @@ export default {
       this.ball2Cnt -= 1
       this.fallBall2 = 1
       this.disBall2 = true
-      var p = Math.floor(Math.random()*(100-1+1)+1)
-      if (p >= Math.ceil(this.value1*Math.pow(this.factor1, this.fightCnt)+this.fightCnt*4)-20) {
-        this.$router.push({ path: '/catch' })
-      }
+      var p = Math.floor(Math.random()*(100-1+1)+1)     
       setTimeout(() => {
         this.fallBall2 = 0
+        if (p >= Math.ceil(this.value1*Math.pow(this.factor1, this.fightCnt)+this.fightCnt*4)-15) {
+          this.$router.push({ path: '/catch' })
+        }
         this.dialog22 = true
-      }, 2000)
+      }, this.ballShakeTime)
     }
   }
 }
